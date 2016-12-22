@@ -2,6 +2,8 @@ var http = require('http');
 var fs = require('fs');
 var formidable = require("formidable");
 var util = require('util');
+var io = require('socket.io');
+var serv_io = io.listen(3300);
 
 var server = http.createServer(function(req, res) {
     if (req.method.toLowerCase() == 'get') {
@@ -98,7 +100,8 @@ function processFormFieldsIndividual(req, res) {
             bytesReceived: bytesReceived,
             bytesExpected: bytesExpected
         };
-        console.log(progress);
+        //console.log(progress);
+        serv_io.emit('progress', progress);
         //Logging the progress on console.
         //Depending on your application you can either send the progress to client
         //for some visual feedback or perform some other operation.
